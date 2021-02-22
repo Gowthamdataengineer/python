@@ -1,0 +1,36 @@
+from tkinter import *
+from bs4 import BeautifulSoup
+import tkinter as tk
+import requests
+
+root = tk.Tk()
+root.geometry('500x300')
+root.resizable(0,0)
+root.title("YT Keyword Scraper")
+Label(root, text ='YT Keyword Scraper' , font ='arial 20 bold').pack()
+Label(root, text ='Enter URL :' , font ='arial 13 bold').place(x=5 ,y=60)
+Websites = Text(root,font = 'arial 10',height='2', width = '40')
+Websites.place(x= 140,y = 60)
+T = Text(root,font = 'arial 10', height='2', width='30')
+T.place(x=200 ,y=200)
+
+def extract():
+    r = requests.get(Websites.get(1.0,END))
+    soup = BeautifulSoup(r.content, "html")
+    
+    title = soup.title.string
+    print ('TITLE IS :', title)
+    
+    meta = soup.find_all('meta')
+    for tag in meta:
+        
+        if 'name' in tag.attrs.keys() and tag.attrs['name'].strip().lower() in ['keywords']:
+            
+            T.insert(tk.END, tag.attrs['content'])
+
+block = Button(root, text = 'Submit',font = 'arial 12 bold',pady = 5,command = extract ,
+width = 6, bg = 'royal blue1', activebackground = 'sky blue')
+block.place(x = 230, y = 150)
+root.mainloop()
+
+#https://www.youtube.com/watch?v=YHiS441Bk1E&feature=youtu.be

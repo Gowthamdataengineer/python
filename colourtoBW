@@ -1,0 +1,4 @@
+from PIL import Image
+img=Image.open('C:\\Users\\lenovo\\Music\\pic.jfif');
+bw=img.convert("L")
+bw.show()
